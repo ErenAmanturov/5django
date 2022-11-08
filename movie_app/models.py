@@ -40,14 +40,11 @@ STARS = (
 
 class Review(models.Model):
     text = models.TextField(max_length=100)
-    stars = models.IntegerField(default=5, choices=STARS)
+    stars = models.IntegerField()
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='reviews')
 
     def __str__(self):
         return self.text
-
-    def stars_str(self):
-        return self.stars * '* '
 
     @property
     def movie_str(self):

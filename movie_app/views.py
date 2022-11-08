@@ -3,6 +3,12 @@ from rest_framework.response import Response
 from .serializers import *
 from .models import Director, Movie, Review
 from rest_framework import status
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
+
+
+class DirectorListCreateAPIView(ListCreateAPIView):
+    queryset = Director.objects.all()
+    serializer_class = DirectorSerializer
 
 
 @api_view(['GET', "POST"])
@@ -19,6 +25,11 @@ def director_view(request):
         director.name = name
         director.save()
         return Response(data=DirectorSerializer(director).data, status=status.HTTP_201_CREATED)
+
+
+class DirectorRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = Director.objects.all()
+    serializer_class = DirectorSerializer
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -42,6 +53,11 @@ def director_details_views(request, id):
         return Response(data={'message': 'deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
 
 
+class MovieListCreateAPIView(ListCreateAPIView):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+
+
 @api_view(['GET', 'POST'])
 def movie(request):
     if request.method == 'GET':
@@ -54,7 +70,7 @@ def movie(request):
         title = request.data.get('title', '')
         description = request.data.get('description', '')
         duration = request.data.get('duration', '1:00:00')
-        director_id = request.data .get('director')
+        director_id = request.data.get('director')
         movie_ = Movie()
         movie_.title = title
         movie_.description = description
@@ -62,6 +78,11 @@ def movie(request):
         movie_.director_id = director_id
         movie_.save()
         return Response(data=MovieSerializer(movie_).data, status=status.HTTP_201_CREATED)
+
+
+class MovieRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -88,6 +109,11 @@ def movie_details_views(request, id):
         return Response(data={'message': 'deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
 
 
+class ReviewListCreateAPIView(ListCreateAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+
+
 @api_view(['GET', 'POST'])
 def review(request):
     if request.method == 'GET':
@@ -106,6 +132,11 @@ def review(request):
         review_.movie_id = movie_id
         review_.save()
         return Response(ReviewSerializer(review_).data, status=status.HTTP_201_CREATED)
+
+
+class ReviewRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
 
 
 @api_view(['GET', "PUT", "DELETE"])
@@ -129,6 +160,11 @@ def review_details_views(request, id):
     elif request.method == "DELETE":
         review_.delete()
         return Response(data={'message': 'deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+
+
+class MoviesReviewListAPIView(ListAPIView):
+    queryset = Movie.objects.all()
+    serializer_class = MovieReviewsSerializers
 
 
 @api_view(['GET'])

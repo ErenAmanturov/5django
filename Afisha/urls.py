@@ -15,16 +15,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from movie_app import views
+from movie_app.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/directors/', views.director_view),
-    path('api/v1/directors/<int:id>/', views.director_details_views),
-    path('api/v1/movies/', views.movie),
-    path('api/v1/movies/<int:id>/', views.movie_details_views),
-    path('api/v1/reviews/', views.review),
-    path('api/v1/reviews/<int:id>/', views.review_details_views),
-    path('api/v1/movies/reviews/', views.movies_review_views),
+    # path('api/v1/directors/', director_view),
+    path('api/v1/directors/', DirectorListCreateAPIView.as_view()),
+    # path('api/v1/directors/<int:id>/', director_details_views),
+    path('api/v1/directors/<int:pk>/', DirectorRetrieveUpdateDestroyAPIView.as_view()),
+    # path('api/v1/movies/', movie),
+    path('api/v1/movies/', MovieListCreateAPIView.as_view()),
+    path('api/v1/movies/<int:id>/', movie_details_views),
+    # path('api/v1/reviews/', review),`
+    path('api/v1/reviews/', ReviewListCreateAPIView.as_view()),
+    # path('api/v1/reviews/<int:id>/', review_details_views),
+    path('api/v1/reviews/<int:pk>/', ReviewRetrieveUpdateDestroyAPIView.as_view()),
+    # path('api/v1/movies/reviews/', movies_review_views),
+    path('api/v1/movies/reviews/', MoviesReviewListAPIView.as_view()),
     path('api/v1/user/', include('user.url'))
 ]
