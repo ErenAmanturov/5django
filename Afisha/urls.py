@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from movie_app.views import *
+from . import swagger
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -34,3 +35,4 @@ urlpatterns = [
     path('api/v1/movies/reviews/', MoviesReviewListAPIView.as_view()),
     path('api/v1/user/', include('user.url'))
 ]
+urlpatterns += swagger.urlpatterns
